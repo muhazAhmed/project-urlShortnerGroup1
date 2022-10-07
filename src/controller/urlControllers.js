@@ -83,7 +83,7 @@ const urlShorter = async function (req, res) {
       if (checkURL) {
         await SET_ASYNC(`${longUrl}`, JSON.stringify(checkURL));
         return res
-          .status(409)
+          .status(200)
           .send({
             status: true,
             msg: "Url already present in MongoDb",
@@ -135,7 +135,7 @@ const getUrlcode = async function (req, res) {
     let cacheData = await GET_ASYNC(`${req.params.urlCode}`);
 
     if (cacheData) {
-      return res.status(302).redirect(cacheData);
+      return res.status(200).send(cacheData);
     } else {
       let profile = await urlModel.findOne({urlCode:data})
       if (!profile)
@@ -144,7 +144,7 @@ const getUrlcode = async function (req, res) {
           .send({ status: false, message: "wrong url code" });
         if(profile)
       await SET_ASYNC(`${profile}`,JSON.stringify(profile.longUrl));            //to send the document for redis database 
-      return res.status(200).send(profile.longUrl);
+      return res.status(302).redirect(profile.longUrl);
     }
   
   } catch (error) {
