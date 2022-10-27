@@ -135,7 +135,8 @@ const getUrlcode = async function (req, res) {
     let cacheData = await GET_ASYNC(`${req.params.urlCode}`);
 
     if (cacheData) {
-      return res.status(200).send(cacheData);
+      return res.status(302).redirect(cacheData);
+      
     } else {
       let profile = await urlModel.findOne({urlCode:data})
       if (!profile)
@@ -153,3 +154,14 @@ const getUrlcode = async function (req, res) {
 };
 
 module.exports = { urlShorter, getUrlcode };
+
+
+
+
+
+
+
+
+
+
+
